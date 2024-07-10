@@ -1,0 +1,29 @@
+name: tag-latest
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Log in to the Elastic Container registry
+      uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+      with:
+        registry: ${{ secrets.ELASTIC_DOCKER_REGISTRY }}
+        username: ${{ secrets.ELASTIC_DOCKER_USERNAME }}
+        password: ${{ secrets.ELASTIC_DOCKER_PASSWORD }}
+
+    - name: Re-tag
+      run: |
+        docker pull ${{ env.DOCKER_IMAGE_NAME }}:v1.28.0
+        docker tag ${{ env.DOCKER_IMAGE_NAME }}:v1.28.0 ${{ env.DOCKER_IMAGE_NAME }}:latest
+        docker push ${{ env.DOCKER_IMAGE_NAME }}:latest
+      env:
+        DOCKER_IMAGE_NAME: "docker.elastic.co/observability/apm-agent-dotnet"
