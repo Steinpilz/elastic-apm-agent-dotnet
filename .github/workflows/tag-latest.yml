@@ -3,7 +3,7 @@ name: tag-latest
 on:
   workflow_dispatch: ~
   push:
-    branches: [ "main" ]
+    branches: [ "feature/tag-latest" ]
 
 permissions:
   contents: read
