@@ -34,6 +34,8 @@ namespace Elastic.Apm.AspNetCore.DiagnosticListener
 
 		public override string Name => "Microsoft.AspNetCore";
 
+		public override bool AllowDuplicates => true;
+
 		protected override void HandleOnNext(KeyValuePair<string, object> kv)
 		{
 			Logger.Trace()?.Log("Called with key: `{DiagnosticEventKey}'", kv.Key);
